@@ -66,23 +66,20 @@ public class Main {
         // longitude = -73.935242
         double nycMinLatitude = 38.730610; // -2
         double nycMaxLatitude = 42.730610; // +2
-        double nycMinLongitude = -71.935242; // -2
-        double nycMaxLongitude = -75.935242; // +2
+        double nycMinLongitude = -75.935242; // -2
+        double nycMaxLongitude = -71.935242; // +2
         
         Dataset<Row> filteredAndSelectedData = selectedData.filter(selectedData.col("TripDistance").notEqual(0.0)
-        			//.and(selectedData.col("PickupLongitude").notEqual(0.0))
         			.and(selectedData.col("PickupLongitude").gt(nycMinLongitude))
         			.and(selectedData.col("PickupLongitude").lt(nycMaxLongitude))
-        			//.and(selectedData.col("PickupLatitude").notEqual(0.0))
         			.and(selectedData.col("PickupLatitude").gt(nycMinLatitude))
         			.and(selectedData.col("PickupLatitude").lt(nycMaxLatitude))
-        			//.and(selectedData.col("DropoffLongitude").notEqual(0.0))
         			.and(selectedData.col("DropoffLongitude").gt(nycMinLongitude))
         			.and(selectedData.col("DropoffLongitude").lt(nycMaxLongitude))
-        			//.and(selectedData.col("DropoffLatitude").notEqual(0.0))
         			.and(selectedData.col("DropoffLatitude").gt(nycMinLatitude))
         			.and(selectedData.col("DropoffLatitude").lt(nycMaxLatitude)));
         		
+        
         VectorAssembler vectorAssembler = new VectorAssembler()
                 .setInputCols(new String[]{"TripDistance", "PickupLongitude", "PickupLatitude", "DropoffLongitude",
                 		"DropoffLatitude","DayOfWeak", "HourOfDay"})
@@ -100,7 +97,7 @@ public class Main {
         
         RandomForestRegressionModel model = rf.fit((trainingData));
 
-        model.save(hdfsUrl + "/big-data/ml-model");
+        model.write().overwrite().save(hdfsUrl + "/big-data/ml-model");
 
         Dataset<Row> predictions = model.transform(testData);
         predictions.show(100);
