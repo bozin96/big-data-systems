@@ -82,7 +82,7 @@ public class Main {
         
         VectorAssembler vectorAssembler = new VectorAssembler()
                 .setInputCols(new String[]{"TripDistance", "PickupLongitude", "PickupLatitude", "DropoffLongitude",
-                		"DropoffLatitude","DayOfWeak", "HourOfDay"})
+                		"DropoffLatitude","DayOfWeak", "HourOfDay","RateCode"})
                 .setOutputCol("Features");
 
         Dataset<Row> transformedData = vectorAssembler.transform(filteredAndSelectedData);

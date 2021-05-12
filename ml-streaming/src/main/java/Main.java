@@ -108,7 +108,7 @@ public class Main {
 
             VectorAssembler vectorAssembler = new VectorAssembler()
                     .setInputCols(new String[]{"TripDistance", "PickupLongitude", "PickupLatitude", "DropoffLongitude",
-                    		"DropoffLatitude","DayOfWeak", "HourOfDay"})
+                    		"DropoffLatitude", "RateCode", "DayOfWeak", "HourOfDay"})
                     .setOutputCol("Features");
 
             Dataset<Row> transformed = vectorAssembler.transform(data);
